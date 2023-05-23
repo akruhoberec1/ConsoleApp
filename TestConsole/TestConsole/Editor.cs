@@ -10,7 +10,7 @@ namespace TestConsole
     {
         private DateTime DOB { get; set; }
 
-        public virtual void GetAllPeople()
+        public override void GetAllPeople()
         {
             Console.WriteLine($"Person: {FirstName} {LastName}");
             Console.WriteLine($"Date of birth: {DOB.ToShortDateString()}");
