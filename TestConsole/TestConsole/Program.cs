@@ -16,7 +16,7 @@ namespace TestConsole
              */
             List<Editor> editors = new List<Editor>
             {
-                new Editor { Id = Guid.NewGuid(), FirstName = "John", LastName = "Cage" },
+                new Editor { Id = Guid.NewGuid(), FirstName = "John", LastName = "Cage"},
                 new Editor { Id = Guid.NewGuid(), FirstName = "Jane", LastName = "Orchestra" },
                 new Editor { Id = Guid.NewGuid(), FirstName = "Roberto", LastName = "Carlos" },
                 new Editor { Id = Guid.NewGuid(), FirstName = "Albus Wulfric Percival Brian", LastName = "Dumbledore" },
@@ -72,13 +72,15 @@ namespace TestConsole
             string editorPassword = "editor";
             string authorPassword = "author";
             string userPassword = "user";
+            string listAuthors = "ListAuthors";
+            string listEditors = "ListEditors";
 
             bool exit = false;
 
             while (!exit)
             {
                 Console.WriteLine("\nHello dear user!\n");
-                Console.WriteLine("Type in the Editor's password if you're an editor, the Author's password if you're an author, or 'exit' to quit:");
+                Console.WriteLine("Type in the Editor's password if you're an editor, the Author's password if you're an author, or 'exit' to quit:\n\n\n Or enter 'ListAuthors' to list authors, or 'ListEditors' to list editors, example of polymorphysm...");
 
                 string compareString = Console.ReadLine();
 
@@ -91,7 +93,7 @@ namespace TestConsole
                     // EDITOR PART
                     // EDITOR PART
                     // EDITOR PART
-                    case var password when password == editorPassword:
+                    case string password when password == editorPassword:
 
                         Console.WriteLine("\nHello editor! Please select a category you want to see articles from, or press 0 to insert a new Author:\n");
                         int num = 1;
@@ -175,7 +177,7 @@ namespace TestConsole
                     //AUTHOR PART
                     //AUTHOR PART
                     //AUTHOR PART
-                    case var password when password == authorPassword:
+                    case string password when password == authorPassword:
                         Console.WriteLine("\n Hello author! Select who you are:");
                         int number = 1;
                         foreach (Author auth in authors)
@@ -198,7 +200,7 @@ namespace TestConsole
                                 num++;
                             }
 
-                            int selectedCategoryNumber = int.Parse(Console.ReadLine()) - 1  ;
+                            int selectedCategoryNumber = int.Parse(Console.ReadLine()) - 1;
 
                             if (selectedCategoryNumber >= 0 && selectedCategoryNumber < categories.Count)
                             {
@@ -241,7 +243,7 @@ namespace TestConsole
                     //USER PART
                     //USER PART
                     //USER PART
-                    case var password when password == userPassword:
+                    case string password when password == userPassword:
                         Console.WriteLine("\nHello user! Select a category you want to read about:");
 
                         int userCategoryNo = 1;
@@ -290,6 +292,14 @@ namespace TestConsole
                         {
                             Console.WriteLine("Invalid category selection.");
                         }
+
+                        break;
+
+                    case string password when password == listAuthors:
+
+                        break;
+
+                    case string password when password == listEditors:
 
                         break;
 
