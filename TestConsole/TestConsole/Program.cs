@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.SqlServer.Server;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -59,94 +60,233 @@ namespace TestConsole
                 int randomAutIndex = random.Next(authors.Count);
                 Author randomAuthor = authors[randomAutIndex];
 
-                int randomCatIndex = random.Next(categories.Count);        
-                Category randomCategory = categories[randomCatIndex];  
+                int randomCatIndex = random.Next(categories.Count);
+                Category randomCategory = categories[randomCatIndex];
 
-                articles.Add(new Article { Id = Guid.NewGuid(), Title = "Title " + articleNo, Description = "Description " + articleNo, Text = "Lorem ipsum something " + articleNo, Category = randomCategory, Author = randomAuthor});
+                articles.Add(new Article { Id = Guid.NewGuid(), Title = "Title " + articleNo, Description = "Description " + articleNo, Text = "Lorem ipsum something " + articleNo, Category = randomCategory, Author = randomAuthor });
                 articleNo++;
             }
 
 
-            //EDITOR OR AUTHOR AUTH
+            //EDITOR OR AUTHOR AUTH OR USER AUTH
             string editorPassword = "editor";
             string authorPassword = "author";
-            Console.WriteLine("\nHello dear user!\n");
-            Console.WriteLine("\nType in Editors password if you're an editor, Authors password if you're an author, else you will be an User:\n");
-            string compareString = Console.ReadLine();
+            string userPassword = "user";
 
+            bool exit = false;
 
-            //EDITOR PART
-
-            if (compareString == editorPassword)
+            while (!exit)
             {
-                Console.WriteLine("\n Hello editor! Please select a category you want to see articles from, or press 0 to insert a new Author:\n");
-                int num = 1;
-                foreach (var cat in categories)
+                Console.WriteLine("\nHello dear user!\n");
+                Console.WriteLine("Type in the Editor's password if you're an editor, the Author's password if you're an author, or 'exit' to quit:");
+
+                string compareString = Console.ReadLine();
+
+                switch (compareString.ToLower())
                 {
-                    int articleCount = articles.Count(a => a.Category == cat);
-                    Console.WriteLine($"{num}. {cat.Name} ({articleCount} articles)");
-                    num++;
-                }
+                    case "exit":
+                        exit = true;
+                        break;
 
-                int selectedCategoryIndex = int.Parse(Console.ReadLine()) - 1;
+                    // EDITOR PART
+                    // EDITOR PART
+                    // EDITOR PART
+                    case var password when password == editorPassword:
 
-                    if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.Count)
-                    {
-                        Category selectedCategory = categories[selectedCategoryIndex];
-                        List<Article> articlesInCategory = articles.Where(a => a.Category == selectedCategory).ToList();
-
-                        Console.WriteLine("\nArticles in the selected category:");
-                        foreach (Article article in articlesInCategory)
+                        Console.WriteLine("\nHello editor! Please select a category you want to see articles from, or press 0 to insert a new Author:\n");
+                        int num = 1;
+                        foreach (var cat in categories)
                         {
-                            Console.WriteLine("Title: " + article.Title);
-                            Console.WriteLine("Description: " + article.Description);
-                            Console.WriteLine("Author: " + article.Author.FirstName + " " + article.Author.LastName);
-                            Console.WriteLine("-------------------");
+                            int articleCount = articles.Count(a => a.Category == cat);
+                            Console.WriteLine($"{num}. {cat.Name} ({articleCount} articles)");
+                            num++;
                         }
-                    }
-                    else
-                    {
-                        Console.WriteLine("Invalid category selection.");
-                    }
 
-                Console.Read();
-            }
+                        int selectedCategoryIndex = int.Parse(Console.ReadLine()) - 1;
+
+                        if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.Count)
+                        {
+                            Category selectedCategoryForEditor = categories[selectedCategoryIndex];
+                            List<Article> articlesInCategory = articles.Where(a => a.Category == selectedCategoryForEditor).ToList();
+
+                            Console.WriteLine("\nArticles in the selected category:");
+                            foreach (Article article in articlesInCategory)
+                            {
+                                Console.WriteLine("Title: " + article.Title);
+                                Console.WriteLine("Description: " + article.Description);
+                                Console.WriteLine("Author: " + article.Author.FirstName + " " + article.Author.LastName);
+                                Console.WriteLine("-------------------");
+                            }
+
+                            Console.WriteLine("\nSelect the index of the article you want to edit (or press 0 to insert a new Author):");
+                            int selectedArticleIndex = int.Parse(Console.ReadLine()) - 1;
+
+                            if (selectedArticleIndex >= 0 && selectedArticleIndex < articlesInCategory.Count)
+                            {
+                                Article selectedArticle = articlesInCategory[selectedArticleIndex];
+
+                                Console.WriteLine("\nEnter the new text for the article:");
+                                string newText = Console.ReadLine();
+
+                                selectedArticle.Text = newText;
+
+                                Console.WriteLine("\nArticle text updated successfully!");
+                            }
+                            else if (selectedArticleIndex == 0)
+                            {
+                                //INSERT AUTHOR
+                                Console.WriteLine("\nInsert a new Author:");
+                                Console.WriteLine("Enter the first name:");
+                                string firstName = Console.ReadLine();
+                                Console.WriteLine("Enter the last name:");
+                                string lastName = Console.ReadLine();
+                                Console.WriteLine("Enter the alias:");
+                                string alias = Console.ReadLine();
+
+                                Author newAuthor = new Author
+                                {
+                                    Id = Guid.NewGuid(),
+                                    FirstName = firstName,
+                                    LastName = lastName,
+                                    Alias = alias
+                                };
+
+                                authors.Add(newAuthor);
+
+                                Console.WriteLine("\nNew author added successfully!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid selection.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid category selection.");
+                        }
+
+                        Console.Read();
+
+                        break;
 
 
-            //AUTHOR PART
+                    //AUTHOR PART
+                    //AUTHOR PART
+                    //AUTHOR PART
+                    case var password when password == authorPassword:
+                        Console.WriteLine("\n Hello author! Select an author:");
+                        int number = 1;
+                        foreach (Author auth in authors)
+                        {
+                            Console.WriteLine(number + ". " + auth.FirstName + " " + auth.LastName);
+                            number++;
+                        }
 
-            if (compareString == authorPassword)
-            {
-                Console.WriteLine("\n Hello author! Select a category to write a new article: \n");
-                int num = 1;
-                foreach (var cat in categories)
-                {
-                    int articleCount = articles.Count(a => a.Category == cat);
-                    Console.WriteLine($"{num}. {cat.Name} ({articleCount} articles)");
-                    num++;
+                        int selectedAuthorIndex = int.Parse(Console.ReadLine());
+
+                        if (selectedAuthorIndex >= 0 && selectedAuthorIndex < authors.Count)
+                        {
+                            Author selectedAuthor = authors[selectedAuthorIndex];
+
+                            Console.WriteLine("\nSelect a category to write a new article:");
+                            num = 1;
+                            foreach (var cat in categories)
+                            {
+                                Console.WriteLine(num + ". " + cat.Name);
+                                num++;
+                            }
+
+                            int selectedCategoryNumber = int.Parse(Console.ReadLine());
+
+                            if (selectedCategoryNumber >= 0 && selectedCategoryNumber < categories.Count)
+                            {
+                                Category selectedCategoryForAuthor = categories[selectedCategoryNumber];
+
+                                Console.WriteLine("\nWrite a title:");
+                                string title = Console.ReadLine();
+
+                                Console.WriteLine("Write a description:");
+                                string description = Console.ReadLine();
+
+                                Console.WriteLine("Write text:");
+                                string text = Console.ReadLine();
+
+                                Article newArticle = new Article
+                                {
+                                    Id = Guid.NewGuid(),
+                                    Title = title,
+                                    Description = description,
+                                    Text = text,
+                                    Category = selectedCategoryForAuthor,
+                                    Author = selectedAuthor
+                                };
+
+                                articles.Add(newArticle);
+
+                                Console.WriteLine("\nArticle saved successfully!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid category selection.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid author selection.");
+                        }
+
+                        break;
+                    //USER PART
+                    //USER PART
+                    //USER PART
+                    case var password when password == userPassword:
+                        Console.WriteLine("\nHello user! Select a category you want to read about:");
+                        int selectedCategory = int.Parse(Console.ReadLine());
+
+                        if (selectedCategory >= 0 && selectedCategory < categories.Count)
+                        {
+                            Category selectedCategoryForRead = categories[selectedCategory];
+
+                            Console.WriteLine($"\nArticles in the {selectedCategoryForRead.Name} category:");
+                            List<Article> articlesInCategory = articles.Where(a => a.Category == selectedCategoryForRead).ToList();
+
+                            foreach (var article in articlesInCategory)
+                            {
+                                Console.WriteLine($"Title: {article.Title}");
+                                Console.WriteLine($"Description: {article.Description}");
+                            }
+
+                            Console.WriteLine("\nSelect the index of the article you want to read:");
+                            int selectedArticleIndex = int.Parse(Console.ReadLine());
+
+                            if (selectedArticleIndex >= 0 && selectedArticleIndex < articlesInCategory.Count)
+                            {
+                                Article selectedArticle = articlesInCategory[selectedArticleIndex];
+
+                                Console.WriteLine($"\nTitle: {selectedArticle.Title}");
+                                Console.WriteLine($"Description: {selectedArticle.Description}");
+                                Console.WriteLine($"Text: {selectedArticle.Text}");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Invalid article selection.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Invalid category selection.");
+                        }
+
+                        break;
+
+                    default:
+                        Console.WriteLine("Invalid password. Please try again.");
+                        break;
                 }
-
-
-
-            }
-            else //GENERAL USER PART
-            {
-                Console.WriteLine("\nHello user, you can read articles, here's a list of categories so you can pick desired topic:\n");
-                int num = 1;
-                foreach (var cat in categories)
-                {
-
-                    Console.WriteLine(num);
-                    Console.WriteLine(cat.Name);
-                    num++;
-                }
             }
 
 
-            Console.Read();
+            Console.WriteLine("\nGoodbye!");
         }
-
-
-
     }
 }
