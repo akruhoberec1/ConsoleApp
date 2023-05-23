@@ -83,11 +83,31 @@ namespace TestConsole
                 int num = 1;
                 foreach (var cat in categories)
                 {
-
-                    Console.Write(num); Console.WriteLine(". " + cat.Name);
-
+                    int articleCount = articles.Count(a => a.Category == cat);
+                    Console.WriteLine($"{num}. {cat.Name} ({articleCount} articles)");
                     num++;
                 }
+
+                int selectedCategoryIndex = int.Parse(Console.ReadLine()) - 1;
+
+                    if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.Count)
+                    {
+                        Category selectedCategory = categories[selectedCategoryIndex];
+                        List<Article> articlesInCategory = articles.Where(a => a.Category == selectedCategory).ToList();
+
+                        Console.WriteLine("\nArticles in the selected category:");
+                        foreach (Article article in articlesInCategory)
+                        {
+                            Console.WriteLine("Title: " + article.Title);
+                            Console.WriteLine("Description: " + article.Description);
+                            Console.WriteLine("Author: " + article.Author.FirstName + " " + article.Author.LastName);
+                            Console.WriteLine("-------------------");
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Invalid category selection.");
+                    }
 
                 Console.Read();
             }
@@ -101,9 +121,8 @@ namespace TestConsole
                 int num = 1;
                 foreach (var cat in categories)
                 {
-
-                    Console.WriteLine(num);
-                    Console.WriteLine(cat.Name);
+                    int articleCount = articles.Count(a => a.Category == cat);
+                    Console.WriteLine($"{num}. {cat.Name} ({articleCount} articles)");
                     num++;
                 }
 
