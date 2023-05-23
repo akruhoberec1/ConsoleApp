@@ -95,7 +95,7 @@ namespace TestConsole
 
                         Console.WriteLine("\nHello editor! Please select a category you want to see articles from, or press 0 to insert a new Author:\n");
                         int num = 1;
-                        foreach (var cat in categories)
+                        foreach (Category cat in categories)
                         {
                             int articleCount = articles.Count(a => a.Category == cat);
                             Console.WriteLine($"{num}. {cat.Name} ({articleCount} articles)");
@@ -110,16 +110,18 @@ namespace TestConsole
                             List<Article> articlesInCategory = articles.Where(a => a.Category == selectedCategoryForEditor).ToList();
 
                             Console.WriteLine("\nArticles in the selected category:");
+                            int articleNumber = 1;
                             foreach (Article article in articlesInCategory)
                             {
-                                Console.WriteLine("Title: " + article.Title);
+                                Console.WriteLine(articleNumber + ".\nTitle: " + article.Title);
                                 Console.WriteLine("Description: " + article.Description);
                                 Console.WriteLine("Author: " + article.Author.FirstName + " " + article.Author.LastName);
                                 Console.WriteLine("-------------------");
+                                articleNumber++;
                             }
 
                             Console.WriteLine("\nSelect the index of the article you want to edit (or press 0 to insert a new Author):");
-                            int selectedArticleIndex = int.Parse(Console.ReadLine());
+                            int selectedArticleIndex = int.Parse(Console.ReadLine()) - 1;
 
                             if (selectedArticleIndex >= 0 && selectedArticleIndex < articlesInCategory.Count)
                             {
@@ -132,7 +134,7 @@ namespace TestConsole
 
                                 Console.WriteLine("\nArticle text updated successfully!");
                             }
-                            else if (selectedArticleIndex == 0)
+                            else if (selectedArticleIndex == -1)
                             {
                                 //INSERT AUTHOR
                                 Console.WriteLine("\nInsert a new Author:");
@@ -174,21 +176,21 @@ namespace TestConsole
                     //AUTHOR PART
                     //AUTHOR PART
                     case var password when password == authorPassword:
-                        Console.WriteLine("\n Hello author! Select an author:");
+                        Console.WriteLine("\n Hello author! Select who you are:");
                         int number = 1;
                         foreach (Author auth in authors)
                         {
-                            Console.WriteLine(number + ". " + auth.FirstName + " " + auth.LastName);
+                            Console.WriteLine(number + ". " + auth.Alias);
                             number++;
                         }
 
-                        int selectedAuthorIndex = int.Parse(Console.ReadLine());
+                        int selectedAuthorIndex = int.Parse(Console.ReadLine()) - 1;
 
                         if (selectedAuthorIndex >= 0 && selectedAuthorIndex < authors.Count)
                         {
                             Author selectedAuthor = authors[selectedAuthorIndex];
 
-                            Console.WriteLine("\nSelect a category to write a new article:");
+                            Console.WriteLine("\nSelect a category to write a new article about:");
                             num = 1;
                             foreach (var cat in categories)
                             {
@@ -196,7 +198,7 @@ namespace TestConsole
                                 num++;
                             }
 
-                            int selectedCategoryNumber = int.Parse(Console.ReadLine());
+                            int selectedCategoryNumber = int.Parse(Console.ReadLine()) - 1  ;
 
                             if (selectedCategoryNumber >= 0 && selectedCategoryNumber < categories.Count)
                             {
@@ -241,7 +243,16 @@ namespace TestConsole
                     //USER PART
                     case var password when password == userPassword:
                         Console.WriteLine("\nHello user! Select a category you want to read about:");
-                        int selectedCategory = int.Parse(Console.ReadLine());
+
+                        int userCategoryNo = 1;
+                        foreach (Category cat in categories)
+                        {
+                            int articleCount = articles.Count(a => a.Category == cat);
+                            Console.WriteLine($"{userCategoryNo}. {cat.Name} ({articleCount} articles)");
+                            userCategoryNo++;
+                        }
+
+                        int selectedCategory = int.Parse(Console.ReadLine()) - 1;
 
                         if (selectedCategory >= 0 && selectedCategory < categories.Count)
                         {
@@ -250,14 +261,16 @@ namespace TestConsole
                             Console.WriteLine($"\nArticles in the {selectedCategoryForRead.Name} category:");
                             List<Article> articlesInCategory = articles.Where(a => a.Category == selectedCategoryForRead).ToList();
 
+                            int articleNumber = 1;
                             foreach (var article in articlesInCategory)
                             {
-                                Console.WriteLine($"Title: {article.Title}");
+                                Console.WriteLine($"{articleNumber}. Title: {article.Title}");
                                 Console.WriteLine($"Description: {article.Description}");
+                                articleNumber++;
                             }
 
                             Console.WriteLine("\nSelect the index of the article you want to read:");
-                            int selectedArticleIndex = int.Parse(Console.ReadLine());
+                            int selectedArticleIndex = int.Parse(Console.ReadLine()) - 1;
 
                             if (selectedArticleIndex >= 0 && selectedArticleIndex < articlesInCategory.Count)
                             {
@@ -266,6 +279,7 @@ namespace TestConsole
                                 Console.WriteLine($"\nTitle: {selectedArticle.Title}");
                                 Console.WriteLine($"Description: {selectedArticle.Description}");
                                 Console.WriteLine($"Text: {selectedArticle.Text}");
+
                             }
                             else
                             {
