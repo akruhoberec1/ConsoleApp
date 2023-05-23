@@ -119,7 +119,7 @@ namespace TestConsole
                             }
 
                             Console.WriteLine("\nSelect the index of the article you want to edit (or press 0 to insert a new Author):");
-                            int selectedArticleIndex = int.Parse(Console.ReadLine()) - 1;
+                            int selectedArticleIndex = int.Parse(Console.ReadLine());
 
                             if (selectedArticleIndex >= 0 && selectedArticleIndex < articlesInCategory.Count)
                             {
