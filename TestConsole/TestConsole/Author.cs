@@ -10,7 +10,12 @@ namespace TestConsole
     {
         public string Alias { get; set; }
 
-        
+        public virtual void GetAllPeople()
+        {
+            Console.WriteLine($"Person: {FirstName} {LastName}");
+            Console.WriteLine($"Authors alias: {Alias}");
+        }
+
     }
 
 }

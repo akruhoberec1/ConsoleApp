@@ -9,5 +9,11 @@ namespace TestConsole
     public class Editor : Person
     {
         private DateTime DOB { get; set; }
+
+        public virtual void GetAllPeople()
+        {
+            Console.WriteLine($"Person: {FirstName} {LastName}");
+            Console.WriteLine($"Date of birth: {DOB.ToShortDateString()}");
+        }
     }
 }

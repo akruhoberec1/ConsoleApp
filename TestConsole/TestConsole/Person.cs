@@ -13,5 +13,11 @@ namespace TestConsole
         public string LastName { get; set; }
         public Author Author { get; set; }
         public Editor Editor { get; set; }
+
+        public virtual void GetAllPeople()
+        {
+            Console.WriteLine($"Person: {FirstName} {LastName}");
+        }
+
     }
 }
