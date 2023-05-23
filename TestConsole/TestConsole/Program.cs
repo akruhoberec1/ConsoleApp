@@ -10,6 +10,21 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
+            /*
+             *CREATING EDITORS
+             */
+            List<Editor> editors = new List<Editor>
+            {
+                new Editor { Id = Guid.NewGuid(), FirstName = "John", LastName = "Cage" },
+                new Editor { Id = Guid.NewGuid(), FirstName = "Jane", LastName = "Orchestra" },
+                new Editor { Id = Guid.NewGuid(), FirstName = "Roberto", LastName = "Carlos" },
+                new Editor { Id = Guid.NewGuid(), FirstName = "Albus Wulfric Percival Brian", LastName = "Dumbledore" },
+            };
+
+
+            /*
+                * CREATING AUTHORS
+            */
             List<Author> authors = new List<Author>
             {
                 new Author { Id = Guid.NewGuid(), FirstName = "Stephen", LastName = "King", Alias = "Horror king"},
@@ -17,7 +32,9 @@ namespace TestConsole
                 new Author { Id = Guid.NewGuid(), FirstName = "J. K.", LastName = "Rowling", Alias = "Magic queen"},
                 new Author { Id = Guid.NewGuid(), FirstName = "Ivana", LastName = "Brlic Mazuranic", Alias = "Fairy Tale queen"},
             };
-
+            /*
+                * CREATING CATEGORIES
+            */
             List<Category> categories = new List<Category>
             {
                 new Category { Id = Guid.NewGuid(), Name = "Technology"},
@@ -28,7 +45,9 @@ namespace TestConsole
                 new Category { Id = Guid.NewGuid(), Name = "Culture"},
 
             };
-
+            /*
+                * CREATING ARTICLES
+            */
 
             int articleNo = 1;
             List<Article> articles = new List<Article> { };
@@ -48,6 +67,7 @@ namespace TestConsole
             }
 
 
+            //EDITOR OR AUTHOR AUTH
             string editorPassword = "editor";
             string authorPassword = "author";
             Console.WriteLine("\nHello dear user!\n");
@@ -56,6 +76,7 @@ namespace TestConsole
 
 
             //EDITOR PART
+
             if (compareString == editorPassword)
             {
                 Console.WriteLine("\n Hello editor! Please select a category you want to see articles from, or press 0 to insert a new Author:\n");
@@ -70,8 +91,6 @@ namespace TestConsole
 
                 Console.Read();
             }
-
-
 
 
             //AUTHOR PART
